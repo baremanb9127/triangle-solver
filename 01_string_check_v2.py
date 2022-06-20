@@ -18,10 +18,9 @@ def string_check(var_list, question):
 
 yes_no = ['yes', 'no']
 
-for item in range (0, 6):
-    check_string = False
-    while check_string == False:
-        test_question = input("Have you been given the hypotenuse? ")
-        test_question = string_check(yes_no)
+check_string = False
+while check_string == False:
+    test_question = input("Have you been given the hypotenuse? ")
+    test_question = string_check(yes_no)
 
 
