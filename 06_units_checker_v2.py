@@ -103,32 +103,68 @@ if ab_length >= 1 or bc_length >= 1 or hypotenuse_length >= 1:
     if angle_check =='yes':
         which_angle = string_check("Which angle have you been given the size of? ", (angle_list))
         if which_angle == 'bca':
-            angle_size = num_check("What is the size of the angle BCA? ", float)
+            bca_size = num_check("What is the size of the angle BCA? ", float)
         elif which_angle == 'bac':
-            angle_size = num_check("What is the size of angle BAC? ", float)
+            bac_size = num_check("What is the size of angle BAC? ", float)
     else:
         print("Triangle is unsolvable. ")
     # Solves triangle
-elif ab_length >= 1 and bc_length >= 1:
+if ab_length >= 1 and bc_length >= 1:
     # Solves triangle using pythagoras
     hypotenuse_length = math.sqrt((ab_length * ab_length) + (bc_length * bc_length))
     # need to use tan inverse
-    angle_bca = math.tan-1(ab_length / bc_length)
-    angle_bac = math.tan-1(bc_length / ab_length)
+    angle_bca = math.atan(ab_length / bc_length)
+    angle_bac = math.atan(bc_length / ab_length)
     angle_abc = 90 
 
 
 elif ab_length >= 1 and hypotenuse_length >= 1:
     # Solves triangle using pythagoras
     bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
-    angle_bac = math.cos-1(ab_length / hypotenuse_length)
-    angle_bca = math.sin-1(ab_length / hypotenuse_length)
+    angle_bac = math.acos(ab_length / hypotenuse_length)
+    angle_bca = math.asin(ab_length / hypotenuse_length)
 
 elif bc_length >= 1 and hypotenuse_length >= 1:
+    # Solves triangle using pythagoras
    ac_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (bc_length * bc_length))
-   angle_bac = math.sin-1(bc_length / hypotenuse_length)
-   angle_bca = math.cos-1(bc_length / hypotenuse_length)
+   angle_bac = math.asin(bc_length / hypotenuse_length)
+   angle_bca = math.acos(bc_length / hypotenuse_length)
    
-    # Solves triangle
+elif ab_length >= 1 and bca_size >= 1:
+    # Solves triangle using trigonometry
+    hypotenuse_length = ab_length / math.sin(bca_size)
+    bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
+    bac_size = 90 - bca_size
+
+elif bc_length >= 1 and bca_size >= 1:
+    # Solves triangle using trigonometry
+    hypotenuse_length = bc_length / math.cos(bca_size)
+    ab_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (bc_length * bc_length))
+    bac_size = 90 - bca_size
+
+elif hypotenuse_length >= 1 and bca_size >= 1:
+    # Solves triangle using trigonometry
+    ab_length = hypotenuse_length * math.sin(bca_size)
+    bc_length = hypotenuse_length * math.cos(bca_size)
+    bac_size = 90 - bca_size
+
+elif ab_length >= 1 and bac_size >= 1:
+    # Solves triangle using trigonometry
+    hypotenuse_length = ab_length * math.cos(bac_size)
+    bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
+    bca_size = 90 - bac_size
+
+elif bc_length >= 1 and bac_size >= 1:
+    hypotenuse_length = bc_length / math.sin(bac_size)
+    ab_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (bc_length * bc_length))
+    bca_size = 90 - bac_size
+
+elif hypotenuse_length >= 1 and bac_size >= 1:
+    ab_length = hypotenuse_length * math.cos(bac_size)
+    bc_length = hypotenuse_length * math.sin(bac_size)
+    bca_size = 90 - bac_size
+    
 else:
     print("Triangle is unsolvable")
+
+# Printing Area
