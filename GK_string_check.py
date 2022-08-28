@@ -1,27 +1,21 @@
-def string_check(question, to_check, error):
+total = 0
 
-    valid = False
-    while not valid: 
-        
-        response = input(question).lower()
+have_hyp = input("do you have the hyp? ")
+if have_hyp == "yes":
+    total += 1
 
-        for var_item in to_check:
-            if response == var_item:
-                return response
-            elif response == var_item[0]:
-                return var_item
-        
-        print(error)
+have_opp = input("do you have the hyp? ")
+if have_opp == "yes":
+    total += 1
+
+have_adj = input("do you have the hyp? ")
+if have_adj == "yes":
+    total += 1
 
 
-yes_no_list = ['yes', 'no']
-favourite_thing = ['coffee', 'tea', 'water', 'juice']
+if total == 1:
+    print("do stuff")
+elif total == 0:
+    print("oh no")
 
-# Main routine goes here
-
-gk_random_q = string_check("What is your favourite thing? ", favourite_thing, "Please choose coffee, tea, water or juice")
-
-for item in range (0,6):
-    test_question = string_check("Have you been given the Hypotenuse? ", yes_no_list, "Please enter yes or no")
-    print("You said {}".format(test_question))
 

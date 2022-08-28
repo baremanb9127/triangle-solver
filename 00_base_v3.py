@@ -1,9 +1,20 @@
 # Import Libraries
 import math
-import pandas
 
 def string_check(question, var_list):
 
+    if len(var_list) == 2:
+        error = "Please enter {} or {}".format(var_list[0], var_list[1]) 
+    else:
+        # error message includes items in the list of valid responses
+        error = "Please enter "
+
+        # includes all but the last two items
+        for item in var_list[0:-2]:
+            add_item = "{}, ".format(item)
+            error += add_item
+
+        error += "{} or {}".format(var_list[-2], var_list[-1])
 
     valid = False
     while not valid: 
@@ -15,8 +26,9 @@ def string_check(question, var_list):
                 return response
             elif response == var_item[0]:
                 return var_item
-        
-        print("error message lmao")
+            else: 
+                print(error)
+                break
 
 def num_check(question, num_type):
 
@@ -61,6 +73,7 @@ def to_deg(radians):
     return degrees
 
 # Main Routine Goes Here 
+total = 0
 
 # Set up lists / dictionaries
 yes_no = ['yes', 'no']
@@ -73,104 +86,103 @@ unit_options = ['metric', 'imperial']
 # Asks user if they want to read the instructions
 want_help = string_check("Do you want to read the instructions ", (yes_no))
 if want_help == "yes":
-    print("*** Placeholder Instructions *** ")
+    # Prints instructions
+    print("For communications sake, your triangle will be labeled as ABC, with AC being the hypotenuse. " 
+        "\nTo fully solve your triangle, you need to provide either the length of any two sides or the length of one side and one angle. " 
+        "\nThis program will ask you for the length of each side first - using the correct label to do so: (AB, AC and BC). "
+        "\nIf you have only been given the length of one side, the program will then ask you for the size of an angle - BAC or BCA. " 
+        "\nOnce the program has been provided with sufficient information, it will solve your triangle and print the values of each side and angle with the correct labels and units. ")
+    print()
 
-# Get units
+# Gets units
 get_units = string_check("What measurement system are your units in? (Metric or Imperial) ", (unit_options))
 if get_units == 'metric':
     units = string_check("What unit of measurement are you using? ", (metric_list))
+    print()
 elif get_units == 'imperial':
     units = string_check("What unit of measurement are you using? ", (imperial_list))
+    print()
 
-# Tells user requirements to solve a triangle
+# Asks user if they have the hypotenuse
 hypotenuse_check = string_check("Have you been given the length of the hypotenuse? (AC) ", (yes_no))
 if hypotenuse_check == 'yes':
+    # If yes, asks user for length of hypotenuse
     hypotenuse_length = num_check("What is the length of your hypotenuse? ", float)
+    print()
+    total += 1
+
 # Otherwise, set hypotenuse length to 0
 else:
     hypotenuse_length = 0
+
 # Asks user if they have been given the length of the short side BC
 bc_check = string_check("Have you been given the length of the short side? (BC) ", (yes_no))
 if bc_check == "yes":
+    # If yes, asks user for length of the side bc
     bc_length = num_check("What is the length of the side BC? ", float)
-# Sets bc length to 0 if they haven't been provided with the length
+    print()
+    total += 1
+
+# Otherwise, set bc length to 0
 else: 
     bc_length = 0 
+
 # Asks user if they have bene given the length of the short side AB
 ab_check = string_check("Have you been given the length of the short side? (AB) ", (yes_no))
 if ab_check == "yes":
+    # If yes, asks user for length of the side ab
     ab_length = num_check("What is the length of the short side AB? ", float)
+    print()
+    total += 1
+
 else:
-    # sets ab length to 0 if they can't provide a length
+    # Otherwise, set ab length to 0
     ab_length = 0
 
 
 print()
-if hypotenuse_length == 0 and bc_length == 0 and ab_length >= 1 : # DOESNT WORK??? WHY
+if total == 1:
+    # If ONLY one side has been provided, asks user if they have been given the size of an angle
     angle_check = string_check("Have you been given the size of angle BCA or BAC? (Y/N) ", (yes_no))
-    # Asks user which angle they have been given
+    
     if angle_check =='yes':
+        # If yes, asks user which angle they have been given
         which_angle = string_check("Which angle have you been given the size of? (BAC or BCA) ", (angle_list))
+        # Assigns value to the correct angle
         if which_angle == 'bca':
             bca_size = num_check("What is the size of the angle BCA? ", float)
+            print()
         elif which_angle == 'bac':
             bac_size = num_check("What is the size of angle BAC? ", float)
-    else:
-        print("Triangle is unsolvable. ")
-        
-        
-elif ab_length == 0 and bc_length >= 1 and hypotenuse_length == 0:
-    angle_check = string_check("Have you been given the size of angle BCA or BAC? (Y/N) ", (yes_no))
-    # Asks user which angle they have been given
-    if angle_check =='yes':
-        which_angle = string_check("Which angle have you been given the size of? (BAC or BCA) ", (angle_list))
-        if which_angle == 'bca':
-            bca_size = num_check("What is the size of the angle BCA? ", float)
-        elif which_angle == 'bac':
-            bac_size = num_check("What is the size of angle BAC? ", float)
+            print()
     else:
         print("Triangle is unsolvable. ")
 
-elif ab_length == 0 and bc_length == 0 and hypotenuse_length >= 1:
-    angle_check = string_check("Have you been given the size of angle BCA or BAC? (Y/N) ", (yes_no))
-    # Asks user which angle they have been given
-    if angle_check =='yes':
-        which_angle = string_check("Which angle have you been given the size of? (BAC or BCA) ", (angle_list))
-        if which_angle == 'bca':
-            bca_size = num_check("What is the size of the angle BCA? ", float)
-            bac_size = 0
-        elif which_angle == 'bac':
-            bac_size = num_check("What is the size of angle BAC? ", float)
-            bca_size = 0
-    else:
-        print("Triangle is unsolvable. ")    
+# If no values have been provided for any sides, prints 'Triangle is unsolvable.'        
+elif total == 0:
+    print("Triangle is unsolvable. ")
 
-    # Solves triangle
+# *** Solving Area ***
 if ab_length >= 1 and bc_length >= 1:
-    # Solves triangle using pythagoras
     hypotenuse_length = math.sqrt((ab_length * ab_length) + (bc_length * bc_length))
-    # need to use tan inverse
     bca_size = math.degrees(math.atan(ab_length / bc_length))
     bac_size = math.degrees(math.atan(bc_length / ab_length))
     abc_size = 90 
 
 
 elif ab_length >= 1 and hypotenuse_length >= 1:
-    # Solves triangle using pythagoras
     bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
     bac_size = math.degrees(math.acos(ab_length / hypotenuse_length))
     bca_size = math.degrees(math.asin(ab_length / hypotenuse_length))
     abc_size = 90
 
 elif bc_length >= 1 and hypotenuse_length >= 1:
-    # Solves triangle using pythagoras
    ab_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (bc_length * bc_length))
    bac_size = math.degrees(math.asin(bc_length / hypotenuse_length))
    bca_size = math.degrees(math.acos(bc_length / hypotenuse_length))
    abc_size = 90
 
 elif ab_length >= 1 and bca_size >= 1:
-    # Solves triangle using trigonometry
     bca_size = to_rad(bca_size)
     hypotenuse_length = ab_length / math.sin(bca_size)
     bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
@@ -179,8 +191,6 @@ elif ab_length >= 1 and bca_size >= 1:
     abc_size = 90
 
 elif bc_length >= 1 and bca_size >= 1:
-    # Solves triangle using trigonometry
-    # angle using trigonometry
     bca_size = to_rad(bca_size)
     hypotenuse_length = (bc_length / math.cos(bca_size))
     ab_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (bc_length * bc_length))
@@ -189,7 +199,6 @@ elif bc_length >= 1 and bca_size >= 1:
     abc_size = 90
 
 elif hypotenuse_length >= 1 and bca_size >= 1:
-    # Solves triangle using trigonometry
     bca_size = to_rad(bca_size)
     ab_length = math.sin(bca_size) * hypotenuse_length
     bc_length = math.cos(bca_size) * hypotenuse_length
@@ -198,7 +207,6 @@ elif hypotenuse_length >= 1 and bca_size >= 1:
     abc_size = 90
 
 elif ab_length >= 1 and bac_size >= 1:
-    # Solves triangle using trigonometry
     bac_size = to_rad(bac_size)
     hypotenuse_length = ab_length * math.cos(bac_size)
     bc_length = math.sqrt((hypotenuse_length * hypotenuse_length) - (ab_length * ab_length))
@@ -225,29 +233,42 @@ elif hypotenuse_length >= 1 and bac_size >= 1:
 else:
     print("Triangle is unsolvable")
 
-# Write data to file
-# idk names stuff?
 
+# Write data to file
 triangle_header = "\n *** Your SOLVED Triangle *** "
 
-hypoenuse_print = "Hypotenuse = {} {} ".format(hypotenuse_length, units)
-ab_print = "Side AB = {} {} ".format(ab_length, units)
-bc_print = "Side BC = {} {} ".format(bc_length, units)
+hypoenuse_print = "Hypotenuse = {:.2f} {} ".format(hypotenuse_length, units)
+ab_print = "Side AB = {:.2f} {} ".format(ab_length, units)
+bc_print = "Side BC = {:.2f} {} ".format(bc_length, units)
 bca_print = "Angle BCA = {} ".format(bca_size)
 bac_print = "Angle BAC = {} ".format(bac_size)
-abc_print = "Angle ABC = 90 "
+abc_print = "Angle ABC = 90.00 "
 
 # holds list of stuff to write into file
 to_write = [triangle_header, hypoenuse_print, ab_print, bc_print, bca_print, bac_print, abc_print]
 
+# Open Text File
+file_name = "Solved_triangle.txt"
+text_file = open(file_name, "w+")
+
+# Write Solved Triangle to Text File
+for item in to_write:
+    text_file.write(item)
+    text_file.write("\n\n")
+
+# close file
+text_file.close()
+
+
+# Print stuff
 # Printing Area
 print("\n *** Your SOLVED Triangle *** ")
 
 print()
-print("Hypotenuse = {} {} ".format(hypotenuse_length, units))
-print("Side AB = {} {} ".format(ab_length, units))
-print("Side BC = {} {} ".format(bc_length, units))
-print("Angle BCA = {} ".format(bca_size))
-print("Angle BAC = {} ".format(bac_size))
-print("Angle ABC = 90 ")
+print("Hypotenuse = {:.2f} {} ".format(hypotenuse_length, units))
+print("Side AB = {:.2f} {} ".format(ab_length, units))
+print("Side BC = {:.2f} {} ".format(bc_length, units))
+print("Angle BCA = {:.2f} ".format(bca_size))
+print("Angle BAC = {:.2f} ".format(bac_size))
+print("Angle ABC = 90.00 ")
 
