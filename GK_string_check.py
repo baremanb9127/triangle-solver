@@ -1,21 +1,17 @@
-total = 0
 
-have_hyp = input("do you have the hyp? ")
-if have_hyp == "yes":
-    total += 1
+# Option 3
 
-have_opp = input("do you have the hyp? ")
-if have_opp == "yes":
-    total += 1
+# play_again = ""
+# while play_again == "":
+#     thing = input("type your name")
+#     print("Hello {}".format(thing))
+#     print()
 
-have_adj = input("do you have the hyp? ")
-if have_adj == "yes":
-    total += 1
+#     play_again = input("Press <enter> to go again, any key to quit")
 
-
-if total == 1:
+while True:
     print("do stuff")
-elif total == 0:
-    print("oh no")
+    again = input("again? ")
 
-
+    if again == "xxx":
+        break
